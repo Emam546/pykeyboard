@@ -86,15 +86,19 @@ class keyboards():
             for key in self.the_input_recently_clicked():
                 the_list.append(key)
         return the_list
-    def pressedkey(self,key):
+    def pressedkey(self,key,wait=False):
         "get key if it press for one time or not"
-        if key not in self.pressed:
-            self.pressed[key]=self.check_key_pressed(key)
-        if self.check_key_pressed(key) and self.pressed[key]:
-            self.pressed[key]=False;return True
-        if self.check_key_pressed(key)==False:
-            self.pressed[key]=True
-            return False
+        result=False
+        while not result:
+            if key not in self.pressed:
+                self.pressed[key]=self.check_key_pressed(key)
+            if self.check_key_pressed(key) and self.pressed[key]:
+                self.pressed[key]=False;result= True
+            if self.check_key_pressed(key)==False:
+                self.pressed[key]=True
+                result= False
+            if not wait:break
+        return result
 
 
     
