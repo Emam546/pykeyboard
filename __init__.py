@@ -31,15 +31,15 @@ class keyboards():
                 self.keys[key] = False
                 return True
             else:
-                if self.__checknow(key):
+                if self.checknow(key):
                     self.keys[key] = False
                     return True
                 else: return False
 
-    def __checknow(self,key):
-        try:
+    def checknow(self,key):
+        
             the_state = True
-            if self.keys[key]:
+            if key in self.keys and self.keys[key]:
                 return True
             if type(key) == tuple:
                 for k in key:
@@ -48,11 +48,11 @@ class keyboards():
             elif GetKeyState(key) >= 0:
                 the_state = False
             return the_state
-        except: return False 
+    
 
     def __checkkey_have_been_pressed(self):
         def __getstat(key):
-            self.keys[key]=self.__checknow(key)
+            self.keys[key]=self.checknow(key)
         while self.checking:
             for key in self.keys.copy():
                 Thread(target=__getstat,args=(key,)).start()
@@ -88,8 +88,6 @@ class keyboards():
         return the_list
     def pressedkey(self,key):
         "get key if it press for one time or not"
-
-     
         if key not in self.pressed:
             self.pressed[key]=self.check_key_pressed(key)
         if self.check_key_pressed(key) and self.pressed[key]:
