@@ -3,12 +3,13 @@ import difflib
 from threading import Thread
 import sys
 import os
+from typing import List
 FILE_PATH=os.path.dirname(__file__)
 sys.path.append(FILE_PATH)
 from keys import ALL_KEYS
 import atexit
 from win32api import GetKeyState
-_keyboards=[]
+
 class keyboards():
     def __init__(self):
         _keyboards.append(self)
@@ -37,17 +38,16 @@ class keyboards():
                 else: return False
 
     def checknow(self,key):
-        
-            the_state = True
-            if key in self.keys and self.keys[key]:
-                return True
-            if type(key) == tuple:
-                for k in key:
-                    if GetKeyState(k) >= 0:
-                        the_state = False
-            elif GetKeyState(key) >= 0:
-                the_state = False
-            return the_state
+        the_state = True
+        if key in self.keys and self.keys[key]:
+            return True
+        if type(key) == tuple:
+            for k in key:
+                if GetKeyState(k) >= 0:
+                    the_state = False
+        elif GetKeyState(key) >= 0:
+            the_state = False
+        return the_state
     
 
     def __checkkey_have_been_pressed(self):
@@ -64,6 +64,7 @@ class keyboards():
     def deletmemory(self):
         self.keys = {}
         self.pressed={}
+    
     def the_input_recently_clicked(self):
         list_keys = []
         for key in ALL_KEYS:
@@ -73,7 +74,6 @@ class keyboards():
 
     
     def whickKeyspressed(self,stime: float):
-
         counting = [True]
         def __cancelthread(stime: float):
             time.sleep(stime)
@@ -106,6 +106,7 @@ class keyboards():
                 return False
             time.sleep(1)
 keyboard=keyboards()
+_keyboards:List[keyboards]=[]
 def stop_checking_all():
     for key_board in _keyboards:
         key_board.stop_checking_all()
@@ -130,7 +131,4 @@ def findmostsimilarkey(word,printing=False):
 def getvaluename(word):
     for x in ALL_KEYS:
         if ALL_KEYS[x] == word:return x
-   
 
-    
-    
