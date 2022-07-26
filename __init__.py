@@ -2,10 +2,10 @@ import time
 import difflib
 from threading import Thread
 from typing import List
-#from pykeyboard.keys import ALL_KEYS
+from pykeyboard.keys import ALL_KEYS
 import atexit
 from win32api import GetKeyState
-_keyboards:List[keyboards]=[]
+_keyboards=[]
 class keyboards():
     def __init__(self):
         _keyboards.append(self)
