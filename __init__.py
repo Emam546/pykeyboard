@@ -1,15 +1,11 @@
 import time
 import difflib
 from threading import Thread
-import sys
-import os
 from typing import List
-FILE_PATH=os.path.dirname(__file__)
-sys.path.append(FILE_PATH)
-from keys import ALL_KEYS
+#from pykeyboard.keys import ALL_KEYS
 import atexit
 from win32api import GetKeyState
-
+_keyboards:List[keyboards]=[]
 class keyboards():
     def __init__(self):
         _keyboards.append(self)
@@ -106,7 +102,7 @@ class keyboards():
                 return False
             time.sleep(1)
 keyboard=keyboards()
-_keyboards:List[keyboards]=[]
+
 def stop_checking_all():
     for key_board in _keyboards:
         key_board.stop_checking_all()
